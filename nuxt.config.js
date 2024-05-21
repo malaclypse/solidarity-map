@@ -84,6 +84,12 @@ export default {
         loadLanguagesAsync: true,
         locales: [
           {
+            name: 'Bulgarian',
+            code: 'bg',
+            iso: 'bg-BG',
+            file: 'bg-BG/index.js'
+          },
+          {
             name: 'English',
             code: 'en',
             iso: 'en-US',
@@ -115,7 +121,7 @@ export default {
           }
         ],
         langDir: 'locales/',
-        defaultLocale: 'en',
+        defaultLocale: 'bg',
         fallbackLocale: 'en',
         strategy: 'prefix',
         detectBrowserLanguage: {

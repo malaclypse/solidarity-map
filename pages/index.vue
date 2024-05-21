@@ -35,7 +35,7 @@ export default {
   }),
   computed: {
     mapBoxHeight() {
-      return `calc(100vh - ${this.appBarHeight}px)`
+      return `calc(95vh - ${this.appBarHeight}px)`
     },
     mapBoxStyle() {
       return `height: ${this.mapBoxHeight}`
