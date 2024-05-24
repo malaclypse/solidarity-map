@@ -6,22 +6,25 @@ ARG PORT=3000
 
 ENV NODE_ENV=production
 
+# Set the working directory
+WORKDIR /app
+
+# Copy the package.json and yarn.lock files
+COPY package.json yarn.lock ./
+
+# Install dependencies
 RUN yarn install
 
-# WORKDIR /src
+# Copy the rest of the application code
+COPY . .
 
-# COPY --link package.json package-lock.json ./
-# RUN npm install --production=false
+FROM base
 
-# COPY --link . .
+# Build the application
+RUN yarn build
 
-# RUN npm run build
-# RUN npm prune
+# Expose the port the app runs on
+EXPOSE $PORT
 
-# FROM base
-
-# ENV PORT=$PORT
-
-# COPY --from=build /src/.output /src/.output
-
-# CMD [ "node", ".output/server/index.mjs" ]
+# Run the application
+CMD ["yarn", "start"]

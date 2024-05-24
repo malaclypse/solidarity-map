@@ -8,32 +8,53 @@ services:
     environment:
       MONGODB_INITDB_ROOT_USERNAME: root
       MONGODB_INITDB_ROOT_PASSWORD: example
+      MONGODB_INITDB_DATABASE: solidarity-map
     networks:
       - map-network
     volumes:
       - db-data:/data/db
     ports:
       - 27017:27017
+    expose:
+      - 27017
+    # healthcheck:
+    #   test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5
 
   api:
     restart: on-failure
     depends_on:
       - db
-    build: ../solidarity-map-api
+        #condition: service_healthy
+    build: 
+      context: ../solidarity-map-api
+      args:
+        - MONGODB_URI=mongodb://root:example@db:27017/solidarity-map?authSource=admin
     networks:
       - map-network
     environment:
-      - MONGODB_URI=mongodb://db:27017
-      - X_DOMAINS=localhost
+      MONGODB_URI: mongodb://root:example@db:27017/solidarity-map?authSource=admin
+      X_DOMAINS: localhost
+    ports:
+      - 5000:5000
+    expose:
+      - 5000
 
-  # ui:
-  #   restart: always
-  #   depends_on:
-  #     - map-api
-  #   build: ./
-      #network_mode: host
-  #   environment:
-  #     - PRIDE_LOCATION=bulgaria
+  ui:
+    restart: on-failure
+    depends_on:
+      - api
+    build: ./
+    networks:
+      - map-network
+    environment:
+      - PRIDE_LOCATION=bulgaria
+    ports:
+      - 3000:3000
+    expose:
+      - 3000
     
 
 volumes:
