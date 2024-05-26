@@ -10,7 +10,7 @@ export default {
   env: {
     // The values that are referenced from process.env can be overridden in the system environment
     // or a .env file at the root of this repository.
-    PRIDE_LOCATION: process.env.PRIDE_LOCATION || 'stPetersburg',
+    PRIDE_LOCATION: process.env.PRIDE_LOCATION || 'bulgaria',
     // Setting SUBSCRIPTION_ENABLED=0 will disable the subscription step
     SKIP_SUBSCRIPTION:
       process.env.SUBSCRIPTION_ENABLED === undefined
@@ -155,7 +155,7 @@ export default {
   },
   proxy: {
     '/api/v1': {
-      target: process.env.API_BASE || 'http://localhost:5000',
+      target: process.env.API_BASE || 'http://0.0.0.0:5000',
       headers: {
         Authorization: `Basic ${apiAuthToken}`
       }
