@@ -1,0 +1,60 @@
+version: '3.8'
+name: solidarity-map
+
+services:
+  db:
+    image: mongodb/mongodb-community-server:7.0.8-ubuntu2204-20240417T084017Z
+    restart: always
+    environment:
+      MONGODB_INITDB_ROOT_USERNAME: root
+      MONGODB_INITDB_ROOT_PASSWORD: example
+      MONGODB_INITDB_DATABASE: solidarity-map
+    network_mode: host
+    volumes:
+      - db-data:/data/db
+    ports:
+      - 27017:27017
+    expose:
+      - 27017
+    # healthcheck:
+    #   test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 5
+
+  api:
+    restart: on-failure
+    depends_on:
+      - db
+        #condition: service_healthy
+    build: 
+      context: ../solidarity-map-api
+      args:
+        - MONGODB_URI=mongodb://root:example@localhost:27017/solidarity-map?authSource=admin
+        - API_USER=root
+        - API_PASSWORD=example
+    network_mode: host
+    environment:
+      MONGODB_URI: mongodb://root:example@localhost:27017/solidarity-map?authSource=admin
+      X_DOMAINS: localhost
+    ports:
+      - 5000:5000
+    expose:
+      - 5000
+
+  # ui:
+  #   restart: on-failure
+  #   depends_on:
+  #     - api
+  #   build: ./
+  #   network_mode: host
+  #   environment:
+  #     - PRIDE_LOCATION=bulgaria
+  #   ports:
+  #     - 3000:3000
+  #   expose:
+  #     - 3000
+    
+
+volumes:
+  db-data:

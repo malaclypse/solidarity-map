@@ -2,7 +2,7 @@
 // Not to be used for production! Note this will only work if recaptcha is disabled.
 // Hence the not in production thing!
 const faker = require('faker')
-const mapInitial = require('../maps/stPetersburg/initial.js')
+const mapInitial = require('../maps/bulgaria/initial.js')
 const axios = require('axios').default
 require('dotenv').config()
 

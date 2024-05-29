@@ -5,7 +5,8 @@
 		}
 	},
 	"cities": {
-		"stPetersburg": "San Pietroburgo"
+		"stPetersburg": "San Pietroburgo",
+		"bulgaria": "Bulgaria"
 	},
 	"dialogs": {
 		"form": {
